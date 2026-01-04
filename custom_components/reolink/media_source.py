@@ -44,10 +44,7 @@ class ReolinkVODMediaSource(core_media_source.ReolinkVODMediaSource):
         if len(parts) not in (7, 8) or parts[0] != "FILE":
             return await super().async_resolve_media(item)
 
-        request = current_request.get()
-        user_agent = request.headers.get("User-Agent", "") if request else ""
-        if "Safari" in user_agent:
-            proxy_url = self._sign_path(generate_ffmpeg_hls_url(item.identifier))
-            return PlayMedia(proxy_url, "application/x-mpegURL")
+        proxy_url = self._sign_path(generate_ffmpeg_hls_url(item.identifier))
+        return PlayMedia(proxy_url, "application/x-mpegURL")
 
         return await super().async_resolve_media(item)
